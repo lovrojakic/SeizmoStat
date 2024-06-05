@@ -11,10 +11,7 @@
 			"name": "https://djx.entlab.hr/m2m/data",
 			"protocolProfileBehavior": {
 				"disabledSystemHeaders": {
-					"user-agent": true,
-					"accept": true,
-					"accept-encoding": true,
-					"connection": true
+					"content-type": true
 				}
 			},
 			"request": {
@@ -37,8 +34,7 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/vnd.ericsson.m2m.input+json;version=1.0\n",
-						"disabled": true
+						"value": "application/vnd.ericsson.m2m.input+json;version=1.0"
 					}
 				],
 				"body": {
