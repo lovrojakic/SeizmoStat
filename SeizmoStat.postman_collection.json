@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "395e475c-3b70-4212-b028-102e9abe8024",
+		"name": "SeizmoStat",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24436219",
+		"_collection_link": "https://martian-sunset-710060.postman.co/workspace/Test-Workspace~8456b9f2-e1f8-4914-b14e-9e2d11fafea9/collection/24436219-395e475c-3b70-4212-b028-102e9abe8024?action=share&source=collection_link&creator=24436219"
+	},
+	"item": [
+		{
+			"name": "https://djx.entlab.hr/m2m/data",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "N1mfSG25G4uUQIvp",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "intstv_seizmostat",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/vnd.ericsson.m2m.input+json;version=1.0\n",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"source\": {\r\n        \"resourceSpec\": \"SiezmoStatIntensity\"   \r\n    },\r\n    \"contentNodes\": [\r\n        {\r\n            \"value\": 0.002\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://djx.entlab.hr/m2m/data",
+					"protocol": "https",
+					"host": [
+						"djx",
+						"entlab",
+						"hr"
+					],
+					"path": [
+						"m2m",
+						"data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
