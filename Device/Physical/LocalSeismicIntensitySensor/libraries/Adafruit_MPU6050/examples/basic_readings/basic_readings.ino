@@ -3,13 +3,17 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
-#include <cmath>
 
 Adafruit_MPU6050 mpu;
-sensors_event_t a, g, temp;
 
-void MPU6050_init() {
-  Serial.println("Adafruit MPU6050 initialization started!");
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit MPU6050 test!");
+
+  // Try to initialize!
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
     while (1) {
@@ -50,6 +54,7 @@ void MPU6050_init() {
     Serial.println("+- 2000 deg/s");
     break;
   }
+
   mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
   Serial.print("Filter bandwidth set to: ");
   switch (mpu.getFilterBandwidth()) {
@@ -80,21 +85,33 @@ void MPU6050_init() {
   delay(100);
 }
 
-void setup(void) {
-  Serial.begin(115200);
-  while (!Serial)
-    delay(10);
-
-  MPU6050_init();
-}
-
 void loop() {
 
   /* Get new sensor events with the readings */
+  sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
 
-  Serial.printf("%f g\n", std::sqrt(a.acceleration.x * a.acceleration.x +
-                                    a.acceleration.y * a.acceleration.y +
-                                    a.acceleration.z * a.acceleration.z));
-  delay(10);
+  /* Print out the values */
+  Serial.print("Acceleration X: ");
+  Serial.print(a.acceleration.x);
+  Serial.print(", Y: ");
+  Serial.print(a.acceleration.y);
+  Serial.print(", Z: ");
+  Serial.print(a.acceleration.z);
+  Serial.println(" m/s^2");
+
+  Serial.print("Rotation X: ");
+  Serial.print(g.gyro.x);
+  Serial.print(", Y: ");
+  Serial.print(g.gyro.y);
+  Serial.print(", Z: ");
+  Serial.print(g.gyro.z);
+  Serial.println(" rad/s");
+
+  Serial.print("Temperature: ");
+  Serial.print(temp.temperature);
+  Serial.println(" degC");
+
+  Serial.println("");
+  delay(500);
 }
