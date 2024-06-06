@@ -10,8 +10,10 @@ const char* ssid = "test";
 const char* password = "test12345";
 
 // MQTT Broker settings
-const char* mqtt_broker = "192.168.189.111";
-const int mqtt_port = 1883;
+const char* mqtt_broker = "djx.entlab.hr";
+const int mqtt_port = 8883;
+const char* mqtt_username = "intstv";
+const char* mqtt_password = "A4j6gC15br";
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
@@ -54,7 +56,7 @@ void reconnect() {
   while (!mqttClient.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (mqttClient.connect("ESP32Client")) {
+    if (mqttClient.connect("ESP32Client", mqtt_username, mqtt_password)) {
       Serial.println("Connected to MQTT broker!");
       mqttClient.subscribe("device/actuation");
       Serial.println("Subscribed to actuation.");
