@@ -7,8 +7,8 @@
 #include <ArduinoJson.h>
 
 // Wifi credentials
-const char* ssid = "test";
-const char* password = "test12345";
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
 
 // MQTT Broker settings
 const char* mqtt_broker = "djx.entlab.hr";
