@@ -4,6 +4,7 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 #include <cmath>
+#include <ArduinoJson.h>
 
 // Wifi credentials
 const char* ssid = "test";
@@ -20,6 +21,8 @@ PubSubClient mqttClient(espClient);
 
 Adafruit_MPU6050 mpu;
 sensors_event_t a, g, temp;
+float accelMagnitudeSum = 0.0f;
+int accelMagnitudeCount = 0;
 
 void setupWiFi() {
   Serial.begin(115200); // init serial port
@@ -142,12 +145,25 @@ void MPU6050_init() {
   delay(100);
 }
 
-// Function to send a random message to the device/acceleration topic
 void sendMessage() {
-  float fakeAcceleration = random(0, 100) / 10.0;  // Generate a random number between 0 and 10
-  String payload = String(fakeAcceleration);
-  mqttClient.publish("device/acceleration", payload.c_str());
-  Serial.printf("Published: %s to topic device/acceleration\n", payload.c_str());
+  // Create JSON object
+  StaticJsonDocument<256> doc;
+
+  // Specify the sender resource
+  doc["source"]["resource"] = "FER";
+  JsonArray contentNodes = doc.createNestedArray("contentNodes");
+
+  // Add the magnitude to the JSON object
+  JsonObject magnitudeNode = contentNodes.createNestedObject();
+  magnitudeNode["value"] = accelMagnitudeSum/accelMagnitudeCount;
+
+  // Serialize JSON
+  char json[256];
+  size_t n = serializeJson(doc, json);
+
+  // Publish the message
+  mqttClient.publish("intstv_seizmostat/Acceletometer/Intesity", json, n);
+  Serial.printf("Topic: intstv_seizmostat/Acceletometer/Intesity\nPublished: %s\n\n", json);
 }
 
 
@@ -158,7 +174,7 @@ void setup() {
   while (!Serial)
     delay(10);
 
-  //MPU6050_init();
+  MPU6050_init();
   mqttClient.setServer(mqtt_broker, mqtt_port);
   mqttClient.setCallback(callback);
   
@@ -171,21 +187,17 @@ void loop() {
 
   mqttClient.loop();
 
-  // Example of publishing a message with sensor data  - this is what we're going to send
-  /*mpu.getEvent(&a, &g, &temp);
-  float accelMagnitude = std::sqrt(a.acceleration.x * a.acceleration.x + a.acceleration.y * a.acceleration.y);
-  String payload = String(accelMagnitude);
-  mqttClient.publish("device/acceleration", payload.c_str());
+  mpu.getEvent(&a, &g, &temp);
+  accelMagnitudeSum += std::sqrt(a.acceleration.x * a.acceleration.x + a.acceleration.y * a.acceleration.y);
+  accelMagnitudeCount++;
 
-  Serial.printf("%f g\n", accelMagnitude);
-
-  delay(1000);*/
-
- // Send a message every 5 seconds to test
-  static unsigned long lastSendTime = 0;
-  if (millis() - lastSendTime > 5000) {
+ // Send a message every 1 second
+  static unsigned long lastSendTime = millis();
+  if (millis() - lastSendTime > 1000) {
     sendMessage();
     lastSendTime = millis();
+    accelMagnitudeSum = 0.0f;
+    accelMagnitudeCount = 0;
   }
 
   delay(100);
