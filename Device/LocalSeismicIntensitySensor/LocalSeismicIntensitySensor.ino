@@ -162,8 +162,8 @@ void sendMessage() {
   size_t n = serializeJson(doc, json);
 
   // Publish the message
-  mqttClient.publish("intstv_seizmostat/input/Acceletometer/Intesity", json, n);
-  Serial.printf("Topic: intstv_seizmostat/input/Acceletometer/Intesity\nPublished: %s\n\n", json);
+  mqttClient.publish("intstv_seizmostat/input/Accelerometer/Intesity", json, n);
+  Serial.printf("Topic: intstv_seizmostat/input/Accelerometer/Intesity\nPublished: %s\n\n", json);
 }
 
 
