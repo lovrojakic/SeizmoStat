@@ -1,5 +1,5 @@
 from paho.mqtt import client as mqtt_client
-import random, json
+import random, json, time
 
 FIRST_RECONNECT_DELAY = 1
 RECONNECT_RATE = 2
@@ -13,9 +13,10 @@ publish = "intstv_seizmostat/output/BuzzerStatus"
 client_id = f'python-mqtt-{random.randint(0, 1000)}'
 username = 'intstv'
 password = 'A4j6gC15br'
+
 threshold = 0.12
 
-def buzzerLogic(intensity):
+def buzzerLogic(intensity): # najkompleksnija logika ikad
     if intensity > threshold:
         return "ON"
     else:
@@ -36,15 +37,13 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
-        message = msg.payload.decode()
-        message = json.loads(message)
+        message = json.loads(msg.payload.decode())
         # {'source': {'resource': 'FER'}, 'contentNodes': [{'value': 1.552906752}]}
         resource = message['source']['resource']
         intensity = message['contentNodes'][0]['value']
-        buzzerStatus = buzzerLogic(float(intensity))
-        final = {'source': {'resource': resource}, 'contentNodes': [{'value': buzzerStatus}]}
+        final = {'source': {'resource': resource}, 'contentNodes': [{'value': buzzerLogic(float(intensity))}]}
         client.publish(publish, json.dumps(final))
-        print(f"Published: {final}\n")
+        print(f"Published: {final} @ Time: {time.time()}")
     client.subscribe(topic)
     client.on_message = on_message
 
