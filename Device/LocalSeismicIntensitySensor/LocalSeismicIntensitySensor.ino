@@ -7,8 +7,8 @@
 #include <ArduinoJson.h>
 
 // Wifi credentials
-const char* ssid = "Wokwi-GUEST";
-const char* password = "";
+const char* ssid = "Lovro’s iPhone";
+const char* password = "umrsenproj";
 
 // MQTT Broker settings
 const char* mqtt_broker = "djx.entlab.hr";
@@ -61,7 +61,7 @@ void reconnect() {
     // Attempt to connect
     if (mqttClient.connect("ESP32Client", mqtt_username, mqtt_password)) {
       Serial.println("Connected to MQTT broker!");
-      mqttClient.subscribe("device/actuation");
+      mqttClient.subscribe("intstv_seizmostat/output/BuzzerStatus");
       Serial.println("Subscribed to actuation.");
     } else {
       Serial.print("failed, rc=");
@@ -162,8 +162,8 @@ void sendMessage() {
   size_t n = serializeJson(doc, json);
 
   // Publish the message
-  mqttClient.publish("intstv_seizmostat/input/Accelerometer/Intensity", json, n);
-  Serial.printf("Topic: intstv_seizmostat/input/Accelerometer/Intensity\nPublished: %s\n\n", json);
+  mqttClient.publish("intstv_seizmostat/input/Intensity", json, n);
+  Serial.printf("Topic: intstv_seizmostat/input/Intensity\nPublished: %s\n\n", json);
 }
 
 
