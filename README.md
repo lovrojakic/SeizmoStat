@@ -1,7 +1,11 @@
 # SeizmoStat
 
 ## Sensor Network
-TODO
+1. Connect your board along with your components according to the schema to a computer
+2. Open project in Arduine IDE
+3. Choose the correct board (ESP32)
+4. Choose the correct port (`/dev/ttyUSBx` or `COMx` depending on your OS)
+5. Upload the code to the board. This will compile the current firmware and flash it to the board.
 
 ## IoT Platform
 1. Add sensors to platform
@@ -19,4 +23,3 @@ TODO
 ## Web App
 1. Run `npm install` to install dependencies
 2. Run `npm start` to start the app
-
