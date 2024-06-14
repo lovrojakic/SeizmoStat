@@ -14,7 +14,7 @@ client_id = f'python-mqtt-{random.randint(0, 1000)}'
 username = 'intstv'
 password = 'A4j6gC15br'
 
-threshold = 0.12
+threshold = 2
 
 def buzzerLogic(intensity): # najkompleksnija logika ikad
     if intensity > threshold:

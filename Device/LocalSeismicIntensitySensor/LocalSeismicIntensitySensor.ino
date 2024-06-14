@@ -6,9 +6,11 @@
 #include <cmath>
 #include <ArduinoJson.h>
 
+#define RESOURCE_URN "FER"
+
 // Wifi credentials
-const char* ssid = "Lovro’s iPhone";
-const char* password = "umrsenproj";
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
 
 // MQTT Broker settings
 const char* mqtt_broker = "djx.entlab.hr";
@@ -23,6 +25,8 @@ Adafruit_MPU6050 mpu;
 sensors_event_t a, g, temp;
 float accelMagnitudeSum = 0.0f;
 int accelMagnitudeCount = 0;
+
+int buzzerPin = 25;
 
 void setupWiFi() {
   Serial.begin(115200); // init serial port
@@ -43,15 +47,16 @@ void callback(char* topic, byte* message, unsigned int length) {
   Serial.print("Message arrived on topic: ");
   Serial.println(topic);
 
-  String messageTemp;
-
-  for (int i = 0; i < length; i++) {
-    messageTemp += (char)message[i];
+  StaticJsonDocument<512> doc;
+  deserializeJson(doc, message, length);
+  if (doc["source"]["resource"] != RESOURCE_URN) {
+    return;
   }
-
-  // Handle message received
-  Serial.print("Message received: ");
-  Serial.println(messageTemp);
+  if (doc["contentNodes"][0]["value"] == "ON") {
+    ledcWriteTone(0, 440);
+  } else if ((doc["contentNodes"][0]["value"] == "OFF")) {
+    ledcWriteTone(0, 0);
+  }
 }
 
 void reconnect() {
@@ -147,10 +152,10 @@ void MPU6050_init() {
 
 void sendMessage() {
   // Create JSON object
-  StaticJsonDocument<256> doc;
+  StaticJsonDocument<512> doc;
 
   // Specify the sender resource
-  doc["source"]["resource"] = "FER";
+  doc["source"]["resource"] = RESOURCE_URN;
   JsonArray contentNodes = doc.createNestedArray("contentNodes");
 
   // Add the magnitude to the JSON object
@@ -175,9 +180,13 @@ void setup() {
     delay(10);
 
   MPU6050_init();
+
   mqttClient.setServer(mqtt_broker, mqtt_port);
   mqttClient.setCallback(callback);
-  
+  mqttClient.setBufferSize(512);
+
+  ledcSetup(0, 10000, 12);
+  ledcAttachPin(buzzerPin, 0);
 }
 
 void loop() {
