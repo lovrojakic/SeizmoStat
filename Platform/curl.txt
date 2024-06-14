@@ -1,0 +1,19 @@
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/data?resourceSpec=SiezmoStatIntensity -H "Accept: application/vnd.ericsson.m2m.output+json;version=1.1" 
+
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/data?res=FER -H "Accept: application/vnd.ericsson.m2m.output+json;version=1.1" - dohvacanje mjerenja
+
+
+
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/data?res=FER -H "Accept: application/vnd.ericsson.m2m.output+json;version=1.1"
+
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/data?res=Katedrala -H "Accept: application/vnd.ericsson.m2m.output+json;version=1.1"
+
+
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/data?res=FER&maxResourcesPerPage=1 -H "Accept: application/vnd.ericsson.m2m.output+json;version=1.1"
+
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/provisioning/sensor/SiezmoStatAccelerometer/resource -H "Accept: application/json" - dohvacanje svih deviceova koji su definirani
+
+curl -k -X GET -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/provisioning/resource/FER/attribute -H "Accept: application/json" - dohvacanje lokacije devicea (mora biti definirano na platformi atribut)
+
+
+curl -k -X POST -u intstv_seizmostat:N1mfSG25G4uUQIvp https://djx.entlab.hr/m2m/data -H "Content-Type: application/vnd.ericsson.m2m.input+json;version=1.0" -H "Accept: */*" --data {"source":{"resource":"FER"},"contentNodes":[{"value":0.3}]}

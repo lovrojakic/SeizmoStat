@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SeizmoStat</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">SeizmoStat</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string-array name="time_range_options">
+        <item>Last Hour</item>
+        <item>Last 12 Hours</item>
+        <item>Last Day</item>
+        <item>All History</item>
+    </string-array>
+
+
+    <string name="title_activity_maps">MapsActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
