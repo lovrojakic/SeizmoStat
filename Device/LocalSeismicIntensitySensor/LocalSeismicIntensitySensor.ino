@@ -42,7 +42,6 @@ void setupWiFi() {
 }
 
 // Callback function to handle messages received on subscribed topics
-// buzzer here probably
 void callback(char* topic, byte* message, unsigned int length) {
   Serial.print("Message arrived on topic: ");
   Serial.println(topic);
