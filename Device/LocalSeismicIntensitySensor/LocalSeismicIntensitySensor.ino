@@ -6,7 +6,7 @@
 #include <cmath>
 #include <ArduinoJson.h>
 
-#define RESOURCE_URN "FER"
+#define RESOURCE_URN "HNK"
 
 // Wifi credentials
 const char* ssid = "Wokwi-GUEST";
@@ -63,7 +63,7 @@ void reconnect() {
   while (!mqttClient.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (mqttClient.connect("ESP32Client", mqtt_username, mqtt_password)) {
+    if (mqttClient.connect(RESOURCE_URN, mqtt_username, mqtt_password)) {
       Serial.println("Connected to MQTT broker!");
       mqttClient.subscribe("intstv_seizmostat/output/BuzzerStatus");
       Serial.println("Subscribed to actuation.");
